@@ -4,7 +4,10 @@ from bz2 import compress,decompress
 
 class Note:
 
-    text = []
+    text = ""
+    position = (-1,-1)
+    size = (250,200)
+    filename = ""
 
     def __init__(self,text = ""):
         self.text = text
@@ -26,8 +29,10 @@ class NoteManager:
     noteList = []
 
     def __init__(self):
-        for note in os.listdir("notes/active/"):
-            self.noteList.append(self.loadNote(note))
+        path = "notes/active/"
+        for note in os.listdir(path):
+            if os.path.isfile(os.path.join(path,note)):
+                self.noteList.append(self.loadNote(note))
 
     def getNotes(self):
         for note in self.noteList:

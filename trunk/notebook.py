@@ -9,13 +9,14 @@ tbTools = {IDB_SAVE:"OnSaveClick"}
 class noteFrame(wx.Frame):
 
     def __init__(self,parent,ID,title,app,note=None):
-        wx.Frame.__init__(self,parent,ID,title,
-                        wx.DefaultPosition,
-                        wx.Size(250,200))
+        wx.Frame.__init__(self,parent,ID,title)
         self.app = app
         self.id = ID
 
         self.note = note or Note()
+
+        self.SetSize(self.note.size)
+        self.SetPosition(self.note.position)
 
         toolbar = self.CreateToolBar(wx.TB_FLAT |
                                     wx.TB_TEXT |
@@ -49,7 +50,13 @@ class noteFrame(wx.Frame):
         pass
 
     def OnClose(self,event):
-        self.note.setText(self.edit.GetValue())
+        self.UpdateNote()
         self.app.noteMan.saveNote(self.note)
         self.app.OnWindowClosing(self.id)
         self.Destroy()
+
+    def UpdateNote(self):
+        self.note.setText(self.edit.GetValue())
+        self.note.size = self.GetSize()
+        self.note.position = self.GetPosition()
+        
