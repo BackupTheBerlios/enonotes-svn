@@ -14,6 +14,7 @@ class SysIcon(wx.TaskBarIcon):
     def __init__(self,app):
         wx.TaskBarIcon.__init__(self)
         self.app = app
+        self.SetIcon(self.app.appIcon,"enoNotes")
 
         self.Bind(wx.EVT_MENU, self.OnNewNote, id=IDM_NOTE)
         self.Bind(wx.EVT_MENU, self.OnExit, id=IDM_EXIT)
@@ -37,12 +38,13 @@ class enoNotes(wx.App):
 
     activeNotes = []
     noteMan = []
+    appIcon = []
 
     def OnInit(self):
+        self.appIcon = wx.Icon("enoNotes.ico",
+                                wx.BITMAP_TYPE_ICO,16,16)
         sysIcon = SysIcon(self)
-        sysIcon.SetIcon(wx.Icon("enoNotes.ico",
-                                wx.BITMAP_TYPE_ICO,16,16),
-                                "enoNotes")
+#        sysIcon.SetIcon(self.appIcon,"enoNotes")
         self.noteMan = NoteManager()
         self.Bind(wx.EVT_TASKBAR_LEFT_UP, self.ToggleNotes)
 

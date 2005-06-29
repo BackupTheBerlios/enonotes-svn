@@ -15,6 +15,7 @@ class noteFrame(wx.Frame):
 
         self.note = note or Note()
 
+        self.SetIcon(self.app.appIcon)
         self.SetSize(self.note.size)
         self.SetPosition(self.note.position)
 
