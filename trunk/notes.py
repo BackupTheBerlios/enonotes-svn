@@ -7,7 +7,7 @@ class Note:
     text = ""
     position = (-1,-1)
     size = (250,200)
-    filename = ""
+    filepath = ""
 
     def __init__(self,text = ""):
         self.text = text
@@ -24,37 +24,64 @@ class Note:
     def getText(self):
         return self.text
 
+    def setFilepath(self,path):
+        self.filepath = path
+
+    def getFilepath(self):
+        return self.filepath
+
+path = "notes/active/"
+
 class NoteManager:
 
     noteList = []
 
     def __init__(self):
-        path = "notes/active/"
         for note in os.listdir(path):
-            if os.path.isfile(os.path.join(path,note)):
-                self.noteList.append(self.loadNote(note))
+            filepath = os.path.join(path,note)
+            if os.path.isfile(filepath):
+                self.loadNote(filepath)
 
     def getNotes(self):
         for note in self.noteList:
             yield note
 
     def loadNote(self,file):
-        note = cPickle.load(open("notes/active/%s" % file,"rb"))
-        note.text = decompress(note.text)
-        return note
+        note = cPickle.load(open(file,"rb"))
+        note.setFilepath(file)
+        note.setText(decompress(note.getText()))
 
-    def saveNote(self,note):
         if note not in self.noteList:
             self.noteList.append(note)
+    
+        return note
 
-        note.text = compress(note.text)
+    def removeNote(self,note):
+        if note.getFilepath() != "":
+            try: os.remove(note.getFilepath())
+            except OSError: pass
+
+        if note in self.noteList:
+            self.noteList.remove(note)
+
+    def saveNote(self,note):
+
+        self.removeNote(note)
+
+        if note.getText() != "":
+
+            note.setFilepath("")
+            note.setText(compress(note.getText()))
         
-        cFile = StringIO()
-        cPickle.dump(note,cFile,-1)
-        nFile = file("notes/active/%s" %
-                    md5.new(cFile.getvalue()).hexdigest(),"wb")
-        nFile.write(cFile.getvalue())
-        nFile.close()
-        cFile.close()
+            cFile = StringIO()
+            cPickle.dump(note,cFile,-1)
 
-        note.text = decompress(note.text)
+            filepath = os.path.join(path,md5.new(cFile.getvalue()).hexdigest())
+
+            nFile = file(filepath,"wb")
+            nFile.write(cFile.getvalue())
+
+            nFile.close()
+            cFile.close()
+
+            note = self.loadNote(filepath)
