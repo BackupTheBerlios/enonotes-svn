@@ -40,7 +40,7 @@ class enoNotes(wx.App):
 
     def OnInit(self):
         sysIcon = SysIcon(self)
-        sysIcon.SetIcon(wx.Icon("favicon.ico",
+        sysIcon.SetIcon(wx.Icon("enoNotes.ico",
                                 wx.BITMAP_TYPE_ICO,16,16),
                                 "enoNotes")
         self.noteMan = NoteManager()
