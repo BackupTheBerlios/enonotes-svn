@@ -1,4 +1,4 @@
-import wx
+import wx,os
 from notes import *
 
 IDB_SAVE = wx.NewId()
@@ -27,7 +27,8 @@ class noteFrame(wx.Frame):
 #        toolbar.AddTool(IDB_SAVE,
 #                        wx.Bitmap("buttonSave.xpm",wx.BITMAP_TYPE_XPM))
         toolbar.AddCheckTool(IDB_ACTIVE,
-                        wx.Bitmap("buttonTick.xpm",wx.BITMAP_TYPE_XPM),
+                        wx.Bitmap(os.path.join("images","buttonTick.xpm"),
+                                  wx.BITMAP_TYPE_XPM),
                         shortHelp="Notiz de-/aktivieren")
         toolbar.ToggleTool(IDB_ACTIVE,True)
 

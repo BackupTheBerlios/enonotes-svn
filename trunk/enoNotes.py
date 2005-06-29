@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import wx
+import wx,os
 
 from notebook import *
 from notes import *
@@ -41,7 +41,7 @@ class enoNotes(wx.App):
     appIcon = []
 
     def OnInit(self):
-        self.appIcon = wx.Icon("enoNotes.ico",
+        self.appIcon = wx.Icon(os.path.join("images","enoNotes.ico"),
                                 wx.BITMAP_TYPE_ICO,16,16)
         sysIcon = SysIcon(self)
 #        sysIcon.SetIcon(self.appIcon,"enoNotes")
