@@ -49,7 +49,7 @@ class NoteManager:
     def loadNote(self,file):
         note = cPickle.load(open(file,"rb"))
         note.setFilepath(file)
-        note.setText(decompress(note.getText()))
+        note.setText(unicode(decompress(note.getText()),'utf-8'))
 
         if note not in self.noteList:
             self.noteList.append(note)
@@ -71,7 +71,7 @@ class NoteManager:
         if note.getText() != "":
 
             note.setFilepath("")
-            note.setText(compress(note.getText()))
+            note.setText(compress(note.getText().encode('utf-8')))
         
             cFile = StringIO()
             cPickle.dump(note,cFile,-1)
